@@ -27,16 +27,17 @@ public class AutoV extends LinearOpMode {
         waitForStart();
         if (!opModeIsActive()) return;
 
+       // turns 115 degrees
         navigation.turnDegrees(115.0, Constants.TURN_SPEED);
-
+        // moves 30 inches up
         navigation.driveDistance(30.0, Constants.DRIVE_SPEED);
-
+        //turns around 180 degrees
         navigation.turnDegrees(180.0, Constants.TURN_SPEED);
-
+        //moves down 30 inches
         navigation.driveDistance(30.0, Constants.DRIVE_SPEED);
-
+        //turns around 220 degrees
         navigation.turnDegrees(-220.0, Constants.TURN_SPEED);
-
+        // moves 30 up
         navigation.driveDistance(30.0, Constants.DRIVE_SPEED);
 
 
