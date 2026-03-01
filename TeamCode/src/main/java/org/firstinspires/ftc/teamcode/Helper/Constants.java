@@ -26,8 +26,8 @@ public final class Constants {
     public static final double TICKS_PER_INCH  = TICKS_PER_REV / (Math.PI * WHEEL_DIAM_IN);
 
     // Autonomous tuning
-    public static final double DRIVE_SPEED   = 0.6;
-    public static final double TURN_SPEED    = 0.4;
+    public static final double DRIVE_SPEED   = 1;
+    public static final double TURN_SPEED    = 1;
     public static final double HEADING_KP    = 0.03;
 
     // Limelight pipeline indices
