@@ -1,0 +1,18 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IntelliJ / Android Studio — exclude workspace state but keep run configs
+.idea/*
+!.idea/runConfigurations/
+
+*.iml
+*.ipr
+*.iws
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db

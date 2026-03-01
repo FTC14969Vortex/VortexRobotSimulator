@@ -1,0 +1,16 @@
+plugins {
+    id 'application'
+}
+
+dependencies {
+    implementation project(':simulator')
+}
+
+application {
+    mainClass = 'com.vortex.simulator.runner.SimulatorRunner'
+}
+
+// Allow running from TeamCode module so classgraph sees both classpaths
+run {
+    classpath = sourceSets.main.runtimeClasspath
+}
