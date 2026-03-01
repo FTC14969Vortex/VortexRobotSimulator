@@ -7,7 +7,9 @@ import org.firstinspires.ftc.teamcode.Helper.Navigation;
 import org.firstinspires.ftc.teamcode.Helper.Robot;
 
 /**
- * Example Autonomous: drive forward 24", turn 90° left, then align to nearest tag.
+ * Example Autonomous: drive forward, then exercise CW and CCW turns at a range
+ * of angles (±45°, ±90°, ±135°, ±180°) to verify turnDegrees across the full
+ * 0°/360° wrap boundary.
  */
 @Autonomous(name = "AutoExample", group = "Autonomous")
 public class AutoExample extends LinearOpMode {
@@ -26,14 +28,21 @@ public class AutoExample extends LinearOpMode {
         waitForStart();
         if (!opModeIsActive()) return;
 
-        // Step 1: Drive forward 24 inches
+        // Drive forward to give the path trail room to show
         navigation.driveDistance(24.0, Constants.DRIVE_SPEED);
 
-        // Step 2: Turn left 90 degrees
-        navigation.turnDegrees(90.0, Constants.TURN_SPEED);
+        // --- CCW turns (positive angles) ---
+        navigation.turnDegrees( 45.0, Constants.TURN_SPEED);   // +45°  CCW
+        navigation.turnDegrees(-45.0, Constants.TURN_SPEED);   // back to start
 
-        // Step 3: Align to nearest AprilTag (up to 3 seconds)
-        navigation.alignToTag(3000);
+        navigation.turnDegrees( 90.0, Constants.TURN_SPEED);   // +90°  CCW
+        navigation.turnDegrees(-90.0, Constants.TURN_SPEED);   // back
+
+        navigation.turnDegrees( 135.0, Constants.TURN_SPEED);  // +135° CCW
+        navigation.turnDegrees(-135.0, Constants.TURN_SPEED);  // back
+
+        navigation.turnDegrees( 180.0, Constants.TURN_SPEED);  // +180° CCW
+        navigation.turnDegrees(-180.0, Constants.TURN_SPEED);  // back
 
         robot.chassis.stop();
         telemetry.addLine("AutoExample complete.");
