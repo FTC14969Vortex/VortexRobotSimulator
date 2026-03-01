@@ -79,16 +79,17 @@ public class FieldPanel extends JPanel {
 
         // Draw path trail
         List<double[]> path = state.getPathSnapshot();
-        if (path.size() >= 2) {
+        int n = path.size();
+        if (n >= 2) {
+            int[] xPoints = new int[n];
+            int[] yPoints = new int[n];
+            for (int i = 0; i < n; i++) {
+                xPoints[i] = fieldToPixelX(path.get(i)[0], w);
+                yPoints[i] = fieldToPixelY(path.get(i)[1], h);
+            }
             g2.setColor(Color.WHITE);
             g2.setStroke(new BasicStroke(1.5f));
-            for (int i = 1; i < path.size(); i++) {
-                int x1 = fieldToPixelX(path.get(i - 1)[0], w);
-                int y1 = fieldToPixelY(path.get(i - 1)[1], h);
-                int x2 = fieldToPixelX(path.get(i)[0], w);
-                int y2 = fieldToPixelY(path.get(i)[1], h);
-                g2.drawLine(x1, y1, x2, y2);
-            }
+            g2.drawPolyline(xPoints, yPoints, n);
         }
 
         // Draw robot

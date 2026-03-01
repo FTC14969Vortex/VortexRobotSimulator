@@ -1,6 +1,8 @@
 package com.vortex.simulator.engine;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +34,10 @@ public class RobotState {
     private double velX = 0.0;
     private double velY = 0.0;
 
-    // Path trail — list of [x, y] waypoints recorded as the robot moves
-    private final List<double[]> path = new ArrayList<>();
-    private static final double PATH_MIN_DIST_IN = 1.0; // inches between recorded points
+    // Path trail — rolling window of [x, y] waypoints recorded as the robot moves
+    private final Deque<double[]> path = new ArrayDeque<>();
+    private static final double PATH_MIN_DIST_IN  = 1.0;   // inches between recorded points
+    private static final int    MAX_PATH_POINTS   = 2000;  // oldest entry evicted beyond this
 
     // ---------------------------------------------------------------
     // Pose accessors
@@ -63,13 +66,14 @@ public class RobotState {
             this.headingRad = headingRad;
             // Record path waypoint if the robot has moved far enough from the last one
             if (path.isEmpty()) {
-                path.add(new double[]{x, y});
+                path.addLast(new double[]{x, y});
             } else {
-                double[] last = path.get(path.size() - 1);
+                double[] last = path.peekLast();
                 double dx = x - last[0];
                 double dy = y - last[1];
                 if (dx * dx + dy * dy >= PATH_MIN_DIST_IN * PATH_MIN_DIST_IN) {
-                    path.add(new double[]{x, y});
+                    if (path.size() >= MAX_PATH_POINTS) path.pollFirst();
+                    path.addLast(new double[]{x, y});
                 }
             }
         } finally { lock.writeLock().unlock(); }
