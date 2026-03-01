@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TelemetryImpl implements Telemetry {
 
     private final TelemetryPanel panel;
     private final Map<String, String> data = new LinkedHashMap<>();
     private final List<String> lines = new ArrayList<>();
+    private final AtomicBoolean updatePending = new AtomicBoolean(false);
 
     public TelemetryImpl(TelemetryPanel panel) {
         this.panel = panel;
@@ -41,12 +43,19 @@ public class TelemetryImpl implements Telemetry {
     public boolean update() {
         List<String> snapshot = new ArrayList<>();
         data.forEach((k, v) -> snapshot.add(k + " : " + v));
-        lines.forEach(snapshot::add);
-        SwingUtilities.invokeLater(() -> panel.setLines(snapshot));
+        snapshot.addAll(lines);
         // Mirror real FTC SDK default autoClear=true: wipe state after each update()
         // so addLine/addData calls don't accumulate across loop iterations.
         data.clear();
         lines.clear();
+        // Coalesce: only queue one EDT update at a time so the opmode loop running
+        // at full speed doesn't flood the EDT and delay key-event processing.
+        if (updatePending.compareAndSet(false, true)) {
+            SwingUtilities.invokeLater(() -> {
+                updatePending.set(false);
+                panel.setLines(snapshot);
+            });
+        }
         return true;
     }
 

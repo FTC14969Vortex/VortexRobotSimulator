@@ -11,6 +11,9 @@ out/
 *.ipr
 *.iws
 
+/local.properties
+
+
 # macOS
 .DS_Store
 
