@@ -34,7 +34,14 @@ public class LetterE extends LinearOpMode {
         navigation.turnDegrees(90, Constants.TURN_SPEED);
         navigation.driveDistance(24, Constants.DRIVE_SPEED);
         navigation.turnDegrees(180, Constants.TURN_SPEED);
-        
+        navigation.driveDistance(24, Constants.DRIVE_SPEED);
+        navigation.turnDegrees(-90, Constants.TURN_SPEED);
+        navigation.driveDistance(48, Constants.DRIVE_SPEED);
+        navigation.turnDegrees(-90, Constants.TURN_SPEED);
+        navigation.driveDistance(24, Constants.DRIVE_SPEED);
+
+
+
 
 
 
