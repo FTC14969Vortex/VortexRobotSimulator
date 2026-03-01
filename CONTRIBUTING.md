@@ -1,155 +1,101 @@
-# Contributing to VortexRobotSimulator
+# Contributing — GitHub Flow
 
-Welcome to Team 14969! This guide walks you through the **GitHub Flow** workflow we use for all robot code.
-
----
-
-## GitHub Flow Overview
-
-```
-main (protected)
-  └── feature/your-branch
-        └── Pull Request → review → merge
-```
-
-1. **Fork** the repo (first time only)
-2. **Create a branch** for your feature
-3. **Commit** your changes with clear messages
-4. **Push** your branch and **open a PR**
-5. **Request a review** from a teammate
-6. **Merge** after approval
+This is how our team shares and reviews code. Follow these steps every time you work on something.
 
 ---
 
-## Step-by-Step
+## The Short Version
 
-### 1. Fork the repository
+1. Create a branch
+2. Write code, commit often
+3. Push and open a Pull Request
+4. Get a teammate to review it
+5. Merge after approval
 
-Click **Fork** on GitHub. This creates your own copy at `github.com/YOUR_USERNAME/VortexRobotSimulator`.
+---
 
-### 2. Clone your fork
+## Step by Step
 
-```bash
-git clone https://github.com/YOUR_USERNAME/VortexRobotSimulator.git
-cd VortexRobotSimulator
-```
-
-### 3. Add the upstream remote (one-time)
-
-```bash
-git remote add upstream https://github.com/VortexDecode/VortexRobotSimulator.git
-```
-
-### 4. Create a branch
-
-Name your branch after what you're working on:
+### 1. Get the latest code
 
 ```bash
-git checkout -b feature/field-centric-teleop
-# or
-git checkout -b fix/auto-heading-drift
+git checkout main
+git pull upstream main
 ```
 
-### 5. Write your OpMode
+### 2. Create a branch
 
-Add your file to `TeamCode/src/main/java/org/firstinspires/ftc/teamcode/OpModes/`.
+Name it after what you're building:
 
-Test it:
 ```bash
-./run.sh
+git checkout -b feature/my-teleop
 ```
 
-### 6. Commit your changes
+| Prefix | When to use |
+|--------|-------------|
+| `feature/` | New OpMode or feature |
+| `fix/` | Bug fix |
+| `tune/` | Adjusting constants or PID |
 
-Write clear, present-tense commit messages:
+### 3. Write your OpMode and test it
+
+Add your file to `TeamCode/src/main/java/org/firstinspires/ftc/teamcode/OpModes/` and run the simulator to test it.
+
+### 4. Commit your changes
 
 ```bash
 git add TeamCode/src/main/java/org/firstinspires/ftc/teamcode/OpModes/MyMode.java
-git commit -m "Add field-centric TeleOp with heading lock"
+git commit -m "Add autonomous routine for blue alliance"
 ```
 
-**Good commit messages:**
-- `Add AprilTag alignment to AutoRed`
-- `Fix heading drift in autonomous turn`
-- `Tune DRIVE_SPEED constant for smoother auto`
+Write commit messages that describe **what changed and why**, not just "updated stuff".
 
-**Bad commit messages:**
+Good:
+- `Add field-centric TeleOp`
+- `Fix heading drift during autonomous turn`
+
+Bad:
 - `stuff`
-- `fixed it`
-- `WIP`
+- `asdfgh`
+- `it works now`
 
-### 7. Push your branch
+### 5. Push and open a Pull Request
 
 ```bash
-git push origin feature/field-centric-teleop
+git push origin feature/my-teleop
 ```
 
-### 8. Open a Pull Request
+Then go to GitHub, click **"Compare & pull request"**, and fill in:
+- What does this do?
+- How did you test it?
 
-1. Go to your fork on GitHub
-2. Click **"Compare & pull request"**
-3. Write a clear description:
-   - What does this OpMode/change do?
-   - How did you test it in the simulator?
-   - Any known issues?
+### 6. Review and merge
 
-### 9. Code Review
+- Assign a teammate as reviewer
+- Address any feedback by pushing more commits to the same branch
+- Don't merge your own PR — wait for approval
 
-- Assign at least one teammate as reviewer
-- Respond to feedback — push new commits to the same branch
-- Don't merge your own PR without a review
+### 7. Clean up
 
-### 10. Merge and clean up
-
-After approval:
 ```bash
-# After the PR is merged on GitHub:
 git checkout main
 git pull upstream main
-git branch -d feature/field-centric-teleop
+git branch -d feature/my-teleop
 ```
 
 ---
 
-## Branch Naming Conventions
+## Code Tips
 
-| Prefix | Use for |
-|--------|---------|
-| `feature/` | New OpModes or capabilities |
-| `fix/` | Bug fixes |
-| `tune/` | Constant/PID tuning |
-| `docs/` | Documentation only |
-| `refactor/` | Code cleanup (no behavior change) |
-
----
-
-## Code Standards
-
-- **One OpMode per file** — keep files small and focused
-- **Use Constants.java** for all hardware names and tuning values — never hardcode strings
-- **Telemetry in every loop** — makes debugging much easier
-- **Comment the `why`**, not the `what`:
-  ```java
-  // Reverse because motors are mounted facing backward on our chassis
-  frontRight.setDirection(Direction.REVERSE);
-  ```
-- **Test in the simulator before opening a PR**
-
----
-
-## Simulator Tips
-
-- Use **AutoBlue** as a template for new autonomous modes
-- Use **AprilTag Follower** to understand Limelight integration
-- The **CameraPanel** shows what the Limelight "sees" — watch it while testing tag alignment
-- The **TelemetryPanel** mirrors what you'd see on the Driver Hub
+- **Use `Constants.java`** for motor names and tuning numbers — never hardcode strings like `"frontLeft"` directly in your OpMode
+- **Call `telemetry.update()` every loop** — it's how you debug
+- **Add `sleep(5)`** at the end of every `while (opModeIsActive())` loop to avoid freezing the simulator
+- **Test in the simulator** before opening a PR
 
 ---
 
 ## Getting Help
 
-- Post in `#robot-code` on the team Discord
-- Tag `@mentor` for design questions
-- Open a GitHub Issue for bugs in the simulator itself
-
-Happy coding! 🤖
+- Ask in `#robot-code` on Discord
+- Tag `@mentor` for questions
+- Open a [GitHub Issue](https://github.com/FTC14969Vortex/VortexRobotSimulator/issues) if you find a bug in the simulator
