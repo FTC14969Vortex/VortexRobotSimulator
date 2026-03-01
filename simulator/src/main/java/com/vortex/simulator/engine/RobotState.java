@@ -1,6 +1,10 @@
 package com.vortex.simulator.engine;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -30,6 +34,11 @@ public class RobotState {
     private double velX = 0.0;
     private double velY = 0.0;
 
+    // Path trail — rolling window of [x, y] waypoints recorded as the robot moves
+    private final Deque<double[]> path = new ArrayDeque<>();
+    private static final double PATH_MIN_DIST_IN  = 1.0;   // inches between recorded points
+    private static final int    MAX_PATH_POINTS   = 2000;  // oldest entry evicted beyond this
+
     // ---------------------------------------------------------------
     // Pose accessors
     // ---------------------------------------------------------------
@@ -55,11 +64,33 @@ public class RobotState {
             this.x = x;
             this.y = y;
             this.headingRad = headingRad;
+            // Record path waypoint if the robot has moved far enough from the last one
+            if (path.isEmpty()) {
+                path.addLast(new double[]{x, y});
+            } else {
+                double[] last = path.peekLast();
+                double dx = x - last[0];
+                double dy = y - last[1];
+                if (dx * dx + dy * dy >= PATH_MIN_DIST_IN * PATH_MIN_DIST_IN) {
+                    if (path.size() >= MAX_PATH_POINTS) path.pollFirst();
+                    path.addLast(new double[]{x, y});
+                }
+            }
         } finally { lock.writeLock().unlock(); }
     }
 
+    /** Returns a snapshot of the recorded path waypoints for rendering. */
+    public List<double[]> getPathSnapshot() {
+        lock.readLock().lock();
+        try { return new ArrayList<>(path); } finally { lock.readLock().unlock(); }
+    }
+
     public void resetPose() {
-        setPose(0, 0, 0);
+        lock.writeLock().lock();
+        try {
+            x = 0; y = 0; headingRad = 0;
+            path.clear();
+        } finally { lock.writeLock().unlock(); }
     }
 
     // ---------------------------------------------------------------

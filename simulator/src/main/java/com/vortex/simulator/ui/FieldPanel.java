@@ -6,6 +6,7 @@ import com.vortex.simulator.engine.RobotState;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.List;
 
 /**
  * 144"×144" overhead field view.
@@ -74,6 +75,21 @@ public class FieldPanel extends JPanel {
             g2.setColor(Color.BLACK);
             g2.setFont(new Font("Monospaced", Font.BOLD, 9));
             g2.drawString(String.valueOf(tag.id()), px - 5, py + 4);
+        }
+
+        // Draw path trail
+        List<double[]> path = state.getPathSnapshot();
+        int n = path.size();
+        if (n >= 2) {
+            int[] xPoints = new int[n];
+            int[] yPoints = new int[n];
+            for (int i = 0; i < n; i++) {
+                xPoints[i] = fieldToPixelX(path.get(i)[0], w);
+                yPoints[i] = fieldToPixelY(path.get(i)[1], h);
+            }
+            g2.setColor(Color.WHITE);
+            g2.setStroke(new BasicStroke(1.5f));
+            g2.drawPolyline(xPoints, yPoints, n);
         }
 
         // Draw robot
