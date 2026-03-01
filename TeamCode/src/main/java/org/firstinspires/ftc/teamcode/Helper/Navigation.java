@@ -54,6 +54,8 @@ public class Navigation {
             robot.update();
             double currentH  = robot.getHeadingDeg();
             double remaining = targetH - currentH;
+            // Normalize to [-180, 180] so the error is correct across the 0/360° wrap
+            remaining = ((remaining + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
 
             if (Math.abs(remaining) < 2.0) break;
 
