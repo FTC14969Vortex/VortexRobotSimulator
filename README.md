@@ -18,7 +18,14 @@ The easiest option: install **Android Studio** from [developer.android.com/studi
 
 Alternatively, install JDK 17 from [adoptium.net](https://adoptium.net/temurin/releases/?version=17).
 
-### 3. Fork & clone
+### 3. Clone
+
+```bash
+git clone https://github.com/FTC14969Vortex/VortexRobotSimulator.git
+cd VortexRobotSimulator
+```
+
+### 3 (Optional) Fork & clone
 
 1. Click **Fork** at the top of this page
 2. Copy the URL of your fork
@@ -108,8 +115,8 @@ Use `@Autonomous` instead of `@TeleOp` for autonomous modes.
 
 ```
 TeamCode/          ← your code goes here
-  Helper/          ← Chassis, Robot, LimelightHelper, Constants
-  OpModes/         ← TeleOpMode, AutoBlue (your modes go here too)
+  Helper/          ← Chassis, Robot, LimelightHelper, Navigation, Constants
+  OpModes/         ← TeleOpMode, AutoExample (your modes go here too)
 
 simulator/         ← simulator engine, don't modify
 ```

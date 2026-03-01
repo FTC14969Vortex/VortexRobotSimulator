@@ -1,4 +1,4 @@
-# Contributing — GitHub Flow
+Uod# Contributing — GitHub Flow
 
 This is how our team shares and reviews code. Follow these steps every time you work on something.
 
@@ -20,7 +20,7 @@ This is how our team shares and reviews code. Follow these steps every time you 
 
 ```bash
 git checkout main
-git pull upstream main
+git pull origin main
 ```
 
 ### 2. Create a branch
@@ -79,7 +79,7 @@ Then go to GitHub, click **"Compare & pull request"**, and fill in:
 
 ```bash
 git checkout main
-git pull upstream main
+git pull origin main
 git branch -d feature/my-teleop
 ```
 
