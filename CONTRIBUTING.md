@@ -1,4 +1,4 @@
-Uod# Contributing — GitHub Flow
+# Contributing — GitHub Flow
 
 This is how our team shares and reviews code. Follow these steps every time you work on something.
 
